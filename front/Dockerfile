@@ -1,16 +1,6 @@
-FROM ubuntu:latest
+FROM nginx:latest
 
-WORKDIR /app
-
-COPY . /app
-
-#RUN mkdir conf
-#RUN mv httpd.conf conf/
-
-RUN apt-get update
-RUN apt-get install -y nginx 
-
-EXPOSE 80
-
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+COPY ./index.html /usr/share/nginx/html/index.html
+COPY ./myscript.js /usr/share/nginx/html/myscript.js
+COPY ./default.conf /etc/nginx/conf.d
 

@@ -6,8 +6,8 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      targetPort: 30002
-      port: 30002
-      nodePort: 30002
+      targetPort: 80
+      port: 80
+      nodePort: 30000
   selector:
     app: front

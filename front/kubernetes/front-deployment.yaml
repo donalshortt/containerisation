@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: front-container
-        image: front:1
+        image: front:2
         ports:
-        - containerPort: 30002
+        - containerPort: 80
