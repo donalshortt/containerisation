@@ -1,0 +1,97 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  name: postgres-config 
+  labels: 
+    app: postgres 
+data: 
+  POSTGRES_DB: postgresdb 
+  POSTGRES_USER: postgresadmin
+---
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: postgres-deployment 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      app: postgres 
+  template: 
+    metadata: 
+      labels: 
+        app: postgres 
+    spec: 
+      containers: 
+        - name: postgres-container 
+          image: postgres:13.1-alpine 
+          imagePullPolicy: "IfNotPresent"
+          ports: 
+            - containerPort: 5432 
+          envFrom: 
+            - configMapRef: 
+                name: postgres-config 
+          env: 
+            - name: POSTGRES_PASSWORD 
+              valueFrom: 
+                secretKeyRef: 
+                  name: postgres-secret 
+                  key: POSTGRES_PASSWORD 
+          volumeMounts: 
+            - mountPath: /var/lib/postgresql/data 
+              name: postgredb 
+      volumes: 
+        - name: postgredb 
+          persistentVolumeClaim: 
+            claimName: postgres-pv-claim
+---
+apiVersion: v1 
+kind: Secret 
+metadata: 
+  name: postgres-secret  
+type: Opaque 
+data:
+  POSTGRES_PASSWORD: YVN0cm9uZ1Bhc3N3b3JkCg==
+---
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: postgres-service
+  labels:
+    app: postgres
+spec:
+  ports:
+   - port: 30002
+     targetPort: 5432
+  selector:
+    app: postgres
+---
+kind: PersistentVolume 
+apiVersion: v1 
+metadata: 
+  name: postgres-pv-volume 
+  labels: 
+    type: local 
+    app: postgres 
+spec: 
+  storageClassName: minikube-hostpath
+  capacity: 
+    storage: 5Gi 
+  accessModes: 
+    - ReadWriteMany 
+  hostPath: 
+    path: "/opt/postgres/data" 
+--- 
+kind: PersistentVolumeClaim 
+apiVersion: v1 
+metadata: 
+  name: postgres-pv-claim 
+  labels:
+    app: postgres 
+spec: 
+  storageClassName: minikube-hostpath 
+  accessModes: 
+    - ReadWriteMany 
+  resources: 
+    requests: 
+      storage: 5Gi

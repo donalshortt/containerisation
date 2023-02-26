@@ -41,7 +41,7 @@ client.connect((err) => {
           		console.log('Table does not exist, creating...');
           		
 				client.query(
-            		`CREATE TABLE number_table (
+            		`CREATE TABLE if not exists number_table (
 						id serial PRIMARY KEY,
 						number integer NOT NULL
 					);
