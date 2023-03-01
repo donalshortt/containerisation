@@ -1,3 +1,5 @@
+./apply-network-policies.sh
+
 cd db
 echo "Deploying db"
 ./deploy.sh
