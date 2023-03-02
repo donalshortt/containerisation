@@ -12,10 +12,10 @@ spec:
   ingress:
     - from:
         - podSelector:
-            matchExpressions:
-            - { key: app, operator: In, values: [front, postgres] }
+            matchLabels:
+              app: front
   egress:
     - to:
         - podSelector:
-            matchExpressions:
-            - { key: app, operator: In, values: [front, postgres] }
+            matchLabels:
+              app: postgres
