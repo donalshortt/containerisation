@@ -11,10 +11,10 @@ folder "Server" {
 
 
 database "Postgres" {
-    [Database Deployment] -> [Database Service]
     folder "Service" {
         [Database Service]
     }
+    [Database Deployment] --> [Database Service]
     folder "Storage" {
         [Database PersistentVolumeClaim]
         [Database PersistentVolume] <-- [Database PersistentVolumeClaim]
