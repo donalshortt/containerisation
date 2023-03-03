@@ -1,5 +1,9 @@
 # Containerization
 
+## GitHub repository
+
+[https://github.com/donalshortt/containerisation](https://github.com/donalshortt/containerisation)
+
 ## TLDR How to run
 
 To deploy on minikube using helm follow the steps in `start-minikube-and-deploy.sh` or just run the script from the root folder of the project.
@@ -14,16 +18,16 @@ This script will
 - Build the docker images and load into minikube cluster registry
 - Enable and configure ingress addon for TLS
 - Lint and install helm charts
-- 
+- Check the state of the pods after deploying
 
 ## Test using curl
 
-To test https connection
 ```zsh
 curl https://$(minikube ip) -k
 curl https://$(minikube ip)/api/number -k
+curl https://$(minikube ip)/api/number -k -X POST
 ```
-`https://` enforces TLS port **443** and `-k` ignores self-signed issue
+`https://` enforces TLS port **443** and `-k` ignores self-signed issue.
 
 ## Helm
 
