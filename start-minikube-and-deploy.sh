@@ -53,6 +53,5 @@ echo 'kubectl get pods'
 kubectl get pods
 echo ''
 
-echo 'curl https://$(minikube ip) -k'
-curl https://$(minikube ip) -k
+echo 'Some more time may be needed for the pods to start up'
 echo ''

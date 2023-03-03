@@ -8,6 +8,14 @@ chmod +x start-minikube-and-deploy.sh
 ./start-minikube-and-deploy.sh
 ```
 
+This script will
+- Delete existing minkube cluster if present
+- Start a new minikube cluster with calico container network interface
+- Build the docker images and load into minikube cluster registry
+- Enable and configure ingress addon for TLS
+- Lint and install helm charts
+- 
+
 ## Test using curl
 
 To test https connection
@@ -28,3 +36,16 @@ curl https://$(minikube ip)/api/number -k
 7. Rollback to previous version with `helm rollback containerization <optional revision num>`
 8. Uninstall chart with `helm uninstall containerization`
 
+## OpenSSL
+
+Generate **private key**, **certificate signing request** and **self-signed certificate**.
+
+```zsh
+openssl req -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr
+openssl x509 -signkey domain.key -in domain.csr -req -days 365 -out domain.crt
+```
+
+Create secret
+```zsh
+kubectl create secret tls tls-certificate --key domain.key --cert domain.crt
+```
