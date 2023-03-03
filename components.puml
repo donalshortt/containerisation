@@ -1,0 +1,26 @@
+@startuml component
+folder "Frontend" {
+    [Frontend NodePort Service] <- [Frontend Deployment]
+}
+
+folder "Server" {
+    [Server ClusterIP Service] <- [Server Deployment]
+}
+
+[Frontend NodePort Service] --> [Server ClusterIP Service] : port 30001
+
+
+database "Postgres" {
+    [Database Deployment] -> [Database Service]
+    folder "Service" {
+        [Database Service]
+    }
+    folder "Storage" {
+        [Database PersistentVolumeClaim]
+        [Database PersistentVolume] <-- [Database PersistentVolumeClaim]
+    }
+    [Database Service] -> [Database PersistentVolumeClaim]
+}
+
+[Server ClusterIP Service] --> [Database Service] : port 30002
+@enduml
