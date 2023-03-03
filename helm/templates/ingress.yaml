@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  defaultBackend:
+    service:
+      name: front-service
+      port:
+        number: 80
